@@ -1,0 +1,95 @@
+{% extends 'control_user/main.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+    <br>
+    <!-- ***** About Us Page ***** -->
+    <div class="page-heading-shows-events">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Acheter votre Ticket</h2>
+                    <span>Check out upcoming and past shows & events and grab your ticket right now.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ticket-details-page">
+        <div class="container">
+            {% for spectacle in spectacles %}
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="left-image">
+                        <img src="{% static 'assets/images/ticket-details.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    
+                    <div class="right-content">
+                        <h4>{{ spectacle.nom_spectacle }}</h4>
+                        <span>{{ spectacle.ticket_disponible }} Tickets still available</span>
+                        <ul>
+                            <li><i class="fa fa-clock-o"></i> {{ spectacle.heure_debut }} GMT+1 - {{ spectacle.heure_fin }} GMT+1</li>
+                            <li><i class="fa fa-map-marker"></i>{{ spectacle.lieu }}</li>
+                        </ul>
+                        <div class="quantity-content">
+                            <div class="left-content">
+                                <h6>Standard Ticket</h6>
+                                <p>$65 per ticket</p>
+                            </div>
+                            <div class="right-content">
+                                <div class="quantity buttons_added">
+                                    <input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern=" " inputmode=" "><input type="button" value="+" class="plus">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="total">
+                            <h4>Total: $210.00</h4>
+                            <!-- <div class="main-dark-button">
+                                <a href="#">Buy Tickets</a>
+                            </div> -->
+                            <div class=" main-dark-button" >
+                                <script amount="123" 
+                                    callback="https://kkiapay-redirect.com"
+                                    data=""
+                                    position="center" 
+                                    theme="#0095ff"
+                                    sandbox="true"
+                                    key="25ffe3b0e4f911ed9cc1f1b54a528cb5"
+                                    src="https://cdn.kkiapay.me/k.js">
+                                </script>
+                                <button class="kkiapay-button " style="display: inline-block;
+                                font-size: 14px;
+                                padding: 12px 18px;
+                                background-color: #343a3e;
+                                color: #fff;
+                                text-align: center;
+                                font-weight: 500;
+                                text-transform: capitalize;
+                                transition: all .3s;
+                                border: none;
+                                outline: none;
+                                margin-left: -120;
+                                width: 80%;">Buy Tickets</button>
+                        </div>
+                        <div class="warn">
+                            <p>*Vous ne pouvez achetez que jusqu'a 10 Tickets pour cette Evenement</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    
+
+    
+
+{% endblock content %}

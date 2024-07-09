@@ -1,0 +1,246 @@
+{% extends 'control_user/main.html' %}
+{% load static %}
+{% block content %}
+
+<br>
+<!-- ***** About Us Page ***** -->
+<div class="page-heading-shows-events">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Shows & Evenement</h2>
+                <span>Voir les spectacles a venir et ceux deja passee.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="shows-events-tabs">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" id="tabs">
+                    <div class="col-lg-12">
+                        <div class="heading-tabs">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <ul>
+                                        <li id="tab-1"><a href='#tabs-1'>A Venir</a></li>
+                                        <li id="tab-2"><a href='#tabs-2'>Passe</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4">
+                                    <!-- jdhfj -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <section class='tabs-content'>
+                            <article id='tabs-1'>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="sidebar">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="heading-sidebar">
+                                                        <h4>Spectacles & Evenenment a Venir : </h4>
+                                                        <li><a href="{% url 'shows' %}" class="event-type-link">Tout les Evenements</a></li>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="venues">
+                                                        <h6>Type Evenement</h6>
+                                                        {% for typespectacle in typespectacles %}
+                                                            <ul>
+                                                                <li><a href="{% url 'shows_by_type' typespectacle.id %}" class="event-type-link">{{ typespectacle.type }}</a></li>
+                                                            </ul>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <div class="row">
+                                            {% if spectacles %}
+                                                {% for spectacle in spectacles %}
+                                                    <div class="col-lg-12 event-detail">
+                                                        <div class="event-item">
+                                                            <div class="row">
+                                                                <div class="col-lg-4">
+                                                                    <div class="left-content">
+                                                                        <h4>{{ spectacle.nom_spectacle }}</h4>
+                                                                        <p>{{ spectacle.description }}</p>
+                                                                        <div class="main-dark-button"> 
+                                                                            <a href="#" class="red-button">Voir Plus</a>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="thumb">
+                                                                        <img src="{{ spectacle.image }}" alt="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="right-content">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <i class="fa fa-clock-o"></i>
+                                                                                <h6>{{ spectacle.heure_debut }} GMT+1<br>{{ spectacle.heure_fin }} GMT+1</h6>
+                                                                            </li>
+                                                                            <li>
+                                                                                <i class="fa far fa-calendar"></i>
+                                                                                <span>{{ spectacle.date }}</span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <i class="fa fa-users"></i>
+                                                                                <span>{{ spectacle.lieu }}</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <marquee direction="right" style="margin-left: 50px; width: 280%; background-color: #00bcd4;">
+                                                    <p style="color: rgb(23, 16, 51);">Aucun evenement disponible pour le moment.... Veuillez réesayer plus tard. Merci.</p>
+                                                </marquee>
+                                                <br><br><br>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>  
+                            <article id='tabs-2'>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="sidebar">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="heading-sidebar">
+                                                        <h4>Spectacles & Evenenment Passes : </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <div class="row">
+                                            {% if spectacles_passes %}
+                                                {% for spectacle in spectacles_passes %}
+                                                <div class="col-lg-12 event-detail">
+                                                    <div class="event-item">
+                                                        <div class="row">
+                                                            <div class="col-lg-4">
+                                                                <div class="left-content">
+                                                                    <h4>{{ spectacle.nom_spectacle }}</h4>
+                                                                    <p>{{ spectacle.description }}</p>
+                                                                    <div class="main-dark-button"> 
+                                                                        <a href="#" class="red-button">Voir Plus</a>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col-lg-4">
+                                                                <div class="thumb">
+                                                                    <img src="{{ spectacle.image }}" alt="">
+                                                                    
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            
+                                                            <div class="col-lg-4">
+                                                                <div class="right-content">
+                                                                    <ul>
+                                                                        <li>
+                                                                            <i class="fa fa-clock-o"></i>
+                                                                            <h6>{{ spectacle.heure_debut }} GMT+1<br>{{ spectacle.heure_fin }} GMT+1 <br>
+                                                                            </h6>
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fa far fa-calendar"></i>
+                                                                            <span>{{ spectacle.date }}</span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <i class="fa fa-users"></i>
+                                                                            <span>{{ spectacle.lieu }}</span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <br><br><br>
+                                                <marquee direction="right" style="margin-left: 50px; width: 480%; background-color: #00bcd4;">
+                                                    <p style="color: rgb(23, 16, 51) ;">Aucun evenement passé disponible pour le moment.... Merci.</p>
+                                                </marquee>
+                                                
+                                                
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>                          
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+    .red-button {
+        background-color: rgb(241, 236, 236);
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .red-button:hover {
+        background-color: rgb(247, 9, 9);
+    }
+
+    .tab-active a{
+        /* background-color: #fff;  */
+        color: #f50b0b !important; /* Texte blanc */
+    }
+</style>
+
+
+<script>
+    $(document).ready(function() {
+        // Fonction pour gérer le changement d'onglet
+        function handleTabChange(event) {
+            // Supprimer la classe "tab-active" de tous les onglets
+            $('ul li').removeClass('tab-active');
+
+            // Ajouter la classe "tab-active" à l'onglet cliqué
+            $(event.target).parent('li').addClass('tab-active');
+        }
+
+        // Attacher un gestionnaire d'événement pour le clic sur les liens de l'onglet
+        $('ul li a').click(function(event) {
+            event.preventDefault(); // Empêcher le comportement par défaut du lien
+            handleTabChange(event);
+        });
+    });
+
+</script>
+
+{% endblock content %}

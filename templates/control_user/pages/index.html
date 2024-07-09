@@ -1,0 +1,285 @@
+{% extends 'control_user/main.html' %}
+{% load static %}
+{% block content %}
+
+
+<br>
+<div class="main-banner">
+    
+    <div class="video-container">
+        <video class="background-video" autoplay loop muted>
+            <source src="{% static 'assets/images/video2.mp4' %}" type="video/mp4">
+            
+        </video>
+    </div>
+    {% include "control_user/partials/countdown.html" %} 
+    
+</div>
+<!-- ***** Main Banner Area End ***** -->
+
+<div class="show-events-carousel">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                  
+                <div class="owl-show-events owl-carousel" {% if forloop.first %}active{% endif %}>
+                    {% for spectacle in spectacles %}      
+                    <div class="item">
+                        <a href="{% url 'ticketdetails' %}"><img src="{{ spectacle.image }}" alt=""></a>
+                    </div>
+                    {% endfor %}   
+                </div>
+                 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- *** Amazing Venus ***-->
+<div class="amazing-venues">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                
+                <div class="left-content">
+                    <h4>Découvrez des contenus exclusifs</h4>
+                    <p>Notre plateforme de streaming propose une sélection exclusive de tout ce qui a trait aux evenementiels au Benin. Explorez nos catégories variées pour trouver le divertissement qui vous convient.</p>
+                    <br>
+                    <p>Abonnez-vous dès aujourd'hui pour accéder à notre catalogue complet et profiter d'une expérience de streaming musicale sans pareille. Que vous soyez passionné de concert musicale, de comédies musicale ou des yellows summer captivants, notre plateforme a tout ce qu'il vous faut pour des heures de divertissement.</p>
+                    <br>
+                    <p>N'attendez plus, plongez dans un monde de divertissement avec notre plateforme de streaming.</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="right-content">
+                    {% for centre in centres %}
+                    <h5><i class="fa fa-map-marker"></i> Notre Emplacement</h5>
+                    <span>{{ centre.adresse }}</span>
+                    <div class="text-button"><a href="#" id="show-map">Voir Directions? <i class="fa fa-arrow-right"></i></a></div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="map-container" style="display: none;">
+                <iframe id="google-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15794.881671855072!2d-0.12755!3d51.507222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDMwJzQyLjIiTiAxMDDCsDUzJzExLjkiVw!5e0!3m2!1sen!2suk!4v1646237161007!5m2!1sen!2suk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="venue-tickets">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>Programmes & Tickets</h2>
+                </div>
+            </div>
+            {% if spectacles %}
+                {% for spectacle in spectacles %}
+                    {% if spectacle.is_gratuit %}
+                        <div class="col-lg-4">
+                            <div class="venue-item">
+                                <div class="thumb">
+                                    <!-- <img src="{{ spectacle.image }}" alt=""> -->
+                                </div>
+                                <div class="down-content">
+                                    <div class="left-content">
+                                        <div class="main-white-button">
+                                            <a href="{% url 'streamings' %}">Allez au Streaming</a>
+                                        </div>
+                                    </div>
+                                    <div class="right-content">
+                                        
+                                        <h4>{{ spectacle.nom_spectacle }}</h4>
+                                        <p>{{ spectacle.description }}</p>
+                                        <ul>
+                                            <li><i class="fa fa-sitemap"></i>Ticket disponible</li>
+                                            <li><i class="fa fa-user"></i>{{ spectacle.ticket_disponible }}</li>
+                                        </ul>
+                                        <!-- <br><br> -->
+                                        <div class="price">
+                                            <span>Cette Spectacle<br>est <em> Gratuit</em></span>
+                                        </div>
+                                    
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+	
+                <marquee direction="right" style="margin-left: 50px; width: 280%; background-color: #00bcd4;">
+                    <p style="color: rgb(23, 16, 51);">Aucun spectacle disponible pour le moment.... Veuillez réesayer plus tard. Merci.</p>
+                </marquee>
+                <br><br><br>
+		    {% endif %}
+
+            {% if spectacles %}
+                {% for spectacle in spectacles %}
+                    {% if not spectacle.is_gratuit %}
+                        <div class="col-lg-4">
+                            <div class="venue-item">
+                                <div class="thumb">
+                                    <!-- <img src="{{ spectacle.image }}" alt=""> -->
+                                </div>
+                                <div class="down-content">
+                                    <div class="left-content">
+                                        <div class="main-white-button">
+                                            <a href="{% url 'ticketdetails' %}">Payer le Tickets</a>
+                                        </div>
+                                    </div>
+                                    <div class="right-content">
+                                        
+                                        <h4>{{ spectacle.nom_spectacle }}</h4>
+                                        <p>{{ spectacle.description }}</p>
+                                        <ul>
+                                            <li><i class="fa fa-sitemap"></i>Ticket disponible</li>
+                                            <li><i class="fa fa-user"></i>{{ spectacle.ticket_disponible }}</li>
+                                        </ul>
+                                        <!-- <br><br> -->
+                                        <div class="price">
+                                            <span>1 ticket<br>from <em>{{ spectacle.prix }}</em></span>
+                                        </div>
+                                    
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+	
+                <marquee direction="right" style="margin-left: 50px; width: 280%; background-color: #00bcd4;">
+                    <p style="color: rgb(23, 16, 51);">Aucun spectacle disponible pour le moment.... Veuillez réesayer plus tard. Merci.</p>
+                </marquee>
+                <br><br><br>
+		    {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Pour les evenements payants -->
+
+
+
+
+
+<!-- *** Coming Events ***-->
+
+<div class="coming-events">
+    
+    <div class="container">
+        <div class="row">
+            {% if spectacles %}
+                {% for spectacle in spectacles %}
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="#"><img src="{{ spectacle.image }}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="#"><h4>{{ spectacle.nom_spectacle }}</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> {{ spectacle.heure_debut }} GMT+1 - {{ spectacle.heure_fin }} GMT+1</li>
+                                <li><i class="fa far fa-calendar"></i> {{ spectacle.date }}</li>
+                                <li><i class="fa fa-map-marker"></i>{{ spectacle.lieu }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+	
+                <marquee direction="right" style="margin-left: 50px; width: 280%; background-color: #00bcd4;">
+                    <p style="color: rgb(23, 16, 51);">Aucun programme disponible pour le moment.... Veuillez réesayer plus tard. Merci.</p>
+                </marquee>
+                <br><br><br>
+		    {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+</script>
+
+
+
+<script>
+    document.getElementById("show-map").addEventListener("click", function(event) {
+    event.preventDefault();
+    var mapContainer = document.getElementById("map-container");
+    if (mapContainer.style.display === "none") {
+        mapContainer.style.display = "block";
+    } else {
+        mapContainer.style.display = "none";
+    }
+    });
+</script>
+
+<style>
+
+
+    /* Animation de l'icône de direction */
+    .text-button a i.fa-arrow-right {
+        animation: bounceRight 1s infinite;
+        color: red;
+    }
+
+    .text-button a {
+        font-weight: bold; /* Mettre en gras le texte du lien */
+    }
+
+    @keyframes bounceRight {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(0);
+    }
+    40% {
+        transform: translateX(5px);
+    }
+    60% {
+        transform: translateX(-5px);
+    }
+    }
+
+
+    #map-container {
+        display: none;
+        text-align: center; /* Centrer horizontalement */
+        margin: 0 auto; /* Centrer horizontalement */
+    }
+
+    #google-map {
+        width: 450px; /* Ajuster la largeur */
+        height: 450px; /* Définir la hauteur */
+    }
+
+    
+
+    .owl-show-events .item img {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .owl-show-events .item:hover img {
+        transform: scale(1.2); /* Effet de zoom uniquement */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Effet d'ombre */
+    }
+
+
+    
+</style>
+        
+{% endblock content %}
+     
+
+
+
+

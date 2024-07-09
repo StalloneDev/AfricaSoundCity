@@ -1,0 +1,125 @@
+{% extends 'control_user/main.html' %}
+{% load static %}
+{% block content %}
+
+
+<br><br><br><br>
+
+<div id="fh5co-container">
+    <div id="fh5co-menus" data-section="menu"></div>
+    <div class="container">
+            <div class="row fh5co-heading row-padded ">
+                <div class="text-center ">
+                    <h2 class="heading to-animate text-center">Nos Plats Culinaires</h2>
+                    <p class="sub-heading to-animate text-center">Découvrez notre sélection de plats savoureux préparés avec les meilleurs ingrédients.</p>
+                </div>
+            </div>
+            <br><br>
+        
+            <div class="row row-padded">
+                {% if restaurants %}
+                    {% for restaurant in restaurants %}
+                    <div class="col-md-6">
+                        <div class="fh5co-food-menu to-animate-2">
+                        
+                            <div class="fh5co-food-desc">
+                                <figure>
+                                    <img src="{{ restaurant.image }}" class="img-responsive" alt="{{ restaurant.nom }}">
+                                    
+                                </figure>
+                                <div>
+                                    <h3 style="color: black;">{{ restaurant.menu }}</h3>
+                                    <p>{{ restaurant.description }}</p>
+                                    <!-- <a href="#" class="btn btn-primary btn-commander">Commander</a> -->
+                                </div>
+                                
+                            </div>
+                            <div class="fh5co-food-pricing">
+                                {{ restaurant.prix }} FCFA
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    {% endfor %}
+                {% else %}
+                    <marquee direction="right" style="margin-left: 10px; width: 180%; background-color: #00bcd4;">
+                        <p style="color: rgb(23, 16, 51);">Aucun menu disponible pour le moment.... Veuillez réesayer plus tard. Merci.</p>
+                    </marquee>
+                {% endif %}
+                    
+            </div>
+           <br><br>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 text-center to-animate-2">
+                    <p><a href="{% url 'commander' %}" class="btn btn-primary btn-outline">Faire une Commande</a></p>
+                </div>
+            </div>
+        
+    </div>
+    
+
+
+</div>
+
+<div id="myModal" class="modal">
+    <div class="modal-container">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+</div>
+
+
+
+
+<style>
+    .text-center {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .fh5co-food-menu figure img {
+        transition: transform 0.3s ease;
+    }
+
+    .fh5co-food-menu figure:hover img {
+        transform: scale(1.1);
+    }
+
+    
+    .modal-container {
+        position: relative;
+        margin: 10% auto;
+        padding: 20px;
+        width: 100%;
+        height: 120%;
+        /* max-width: 800px; */
+        background-color: transparent;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .close {
+        position: absolute;
+        top: 5px; /* Remplacez 'auto' par une valeur en pixels pour ajuster la position verticale */
+        right: 80px;
+        color: #fff;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+
+
+</style>
+
+
+
+{% endblock content %}
+
+

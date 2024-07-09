@@ -1,0 +1,164 @@
+{% load static %}
+{% load i18n %}
+
+<header class="header-area header-sticky">
+  <div class="container">
+      <div class="row">
+          <div class="col-12">
+              <nav class="main-nav">
+                  
+                <!-- <span style="color: red; font-weight: bold; width: 90px; height: 90px; padding-bottom: 30px;">Hey! Official AfricaSoundCity.</span> -->
+                    <a href="index.html" class="logo">Africa<em>SoundCity</em></a>
+                  <!-- ***** Menu Start ***** Art<em>Xibition</em>-->
+                  <ul class="nav">
+                    <li><a href="{% url 'home' %}" class="">{% trans "Home" %}</a></li>
+                    <li><a href="{% url 'service' %}">{% trans "Services" %}</a></li>
+                    <li><a href="{% url 'shows' %}">{% trans "Shows & Events" %}</a></li>
+                    <li><a href="{% url 'streamings' %}">{% trans "Streaming" %}</a></li> 
+                    <li><a href="{% url 'restaurant' %}">{% trans "Restaurant" %}</a></li> 
+                    
+                    {% if user.is_authenticated and user.is_staff %}
+                      <li><a href="{% url 'administration' %}" class="">{% trans "Administration" %}</a></li>
+                      <li><a href="{% url 'logout' %}">
+                        <i class="fa fa-sign-out" style="color: red;">logout</i>
+                      </a></li>
+                    {% else %}
+                      <li><a href="{% url 'page_login' %}" id="login-link">
+                        <i class="fa fa-lock" style="color: red;"></i>
+                      </a></li>
+                    {% endif %}
+                  </ul>      
+                  
+                  <!-- <div class="language-dropdown">
+                    <div class="globe-container">
+                        <img src="{% static 'assets/images/globe.png' %}" alt="Globe" class="globe-icon">
+                        <span class="language-code">{{ request.LANGUAGE_CODE }}</span>
+                        <i class="fa fa-caret-down dropdown-arrow"></i>
+                    </div>
+                    <div class="dropdown-content">
+                      <a href="#" id="lang-fr" onclick="changeLanguage('Fr', event)">Français</a>
+                      <a href="#" id="lang-en" onclick="changeLanguage('En', event)">English</a>
+                    </div>
+                  </div> -->
+
+                  
+                
+                
+                  <a class='menu-trigger'>
+                      <span>Menu</span>
+                  </a>
+                  <!-- ***** Menu End ***** -->
+              </nav>
+          </div>
+      </div>
+  </div>
+</header>
+
+
+
+<script>
+    // Sélectionnez tous les liens de menu
+  const menuLinks = document.querySelectorAll('.nav li a');
+
+  // Fonction pour déplacer la barre sous le menu actif
+  function moveMenuBar() {
+    // Supprimez la classe "active" de tous les liens de menu
+    menuLinks.forEach(link => link.classList.remove('active'));
+
+    // Ajoutez la classe "active" au lien de menu cliqué
+    this.classList.add('active');
+
+    // Stockez le menu actif dans le localStorage
+    localStorage.setItem('activeMenu', this.getAttribute('href'));
+  }
+
+  // Ajoutez un écouteur d'événement "click" à chaque lien de menu
+  menuLinks.forEach(link => link.addEventListener('click', moveMenuBar));
+
+  // Restaurez le menu actif lors du chargement de la page
+  window.addEventListener('DOMContentLoaded', () => {
+    const activeMenuLink = document.querySelector(`.nav li a[href="${localStorage.getItem('activeMenu')}"]`);
+    if (activeMenuLink) {
+      activeMenuLink.classList.add('active');
+    }
+  });
+
+
+</script>
+
+
+<style>
+  
+
+  .globe-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .globe-icon {
+    cursor: pointer;
+    width: 45px; /* Ajustez cette valeur selon vos besoins */
+    height: 40px; /* Ajustez cette valeur selon vos besoins */
+  }
+
+
+  .dropdown-arrow {
+    margin-left: 5px;
+  }
+
+
+  .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+  }
+
+  .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+  }
+
+  .dropdown-content a:hover {
+      background-color: #f1f1f1;
+  }
+
+  .language-dropdown:hover .dropdown-content {
+      display: block;
+  }
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,146 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Créer un compte SuperAdmin</title>
+  <link rel="shortcut icon" type="image/jpeg" href="{% static 'logos/favicon.jpeg' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'styles.min.css' %}"/>
+</head>
+
+<body>
+  
+
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <div
+      class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center w-100">
+          <div class="col-md-8 col-lg-6 col-xxl-3">
+            <div class="card mb-0">
+              <div class="card-body">
+                <a href="{% url 'home' %}" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                  <span style="font-size:26px; color: black;">Africa</span>
+                  <span style="font-size:26px; color: red;">SoundCity</span>
+                </a>
+                <p class="text-center" style="font-size:16px;">Creation d'un compte Administrateur</p>
+                {% if success %}
+                    <div class="success-marquee">{{ success }}</div>
+                {% endif %}
+                
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                <!-- <form method="post" action="{% url 'create_superadmin' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="email_or_phone" class="form-label">E-mail ou Téléphone</label>
+                        <input type="text" class="form-control" id="email_or_phone" name="email_or_phone" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mx-2">Créer le compte</button>
+                        <a href="{% url 'home' %}" class="btn btn-secondary mx-2 btn-home">Accueil</a>
+                    </div>
+
+                </form> -->
+                <form method="post" action="{% url 'create_superadmin' %}" id="register-form">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                      <label for="last_name" class="form-label">Nom</label>
+                      <input type="text" class="form-control" id="last_name" autocomplete="last_name" required name="last_name">
+                    </div>
+                    <div class="mb-3">
+                      <label for="first_name" class="form-label">Prénom</label>
+                      <input type="text" class="form-control" id="first_name" autocomplete="first_name" required name="first_name">
+                    </div>
+                    <div class="mb-3">
+                      <label for="email_or_phone" class="form-label">E-mail ou Tel</label>
+                      <input type="text" class="form-control" id="email_or_phone" required name="email_or_phone" autocomplete="email_or_phone">
+                    </div>
+                    <div class="mb-4">
+                      <label for="password" class="form-label">Mot de passe</label>
+                      <input type="password" name="password" class="form-control" id="password" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin">
+                        <label class="form-check-label" for="is_admin">Administrateur</label>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="is_artistes" name="is_artistes">
+                        <label class="form-check-label" for="is_artistes">Artiste</label>
+                    </div>
+                    <div class="form-group d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mx-2">Créer le compte</button>
+                        <a href="{% url 'home' %}" class="btn btn-secondary mx-2 btn-home">Accueil</a>
+                    </div>
+                  </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
+
+
+<style>
+    .success-marquee {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      animation: marquee 15s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .btn-home {
+      margin-left: 20px;
+      text-decoration: none;
+    }
+  </style>
+
+<script>
+    document.getElementById('register-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: {
+          'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+      });
+      const result = await response.json();
+      if (response.ok) {
+        window.location.href = result.redirect_url;
+      } else {
+        alert(result.error);
+      }
+    });
+  </script>

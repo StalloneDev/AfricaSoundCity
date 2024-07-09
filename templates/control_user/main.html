@@ -1,0 +1,99 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!doctype html>
+<html class="no-js" lang="{{ LANGUAGE_CODE }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Tooplate">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous"> -->
+
+    
+
+    <title>Africa229Show</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/tooplate-artxibition.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/food.css' %}">
+
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'assets/css/slick.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/slick-theme.css' %}"> -->
+
+    <link rel="icon" href="{% static 'assets/images/show.png' %}" type="image/x-icon">
+
+
+    {% block extrastyle %}{% endblock extrastyle %}
+
+</head>
+
+    <body>
+        
+        <!-- ***** Preloader Start ***** -->
+        <div id="js-preloader" class="js-preloader">
+            <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            </div>
+        </div>
+      <!-- ***** Preloader End ***** -->
+
+        <!-- ***** Pre HEader ***** -->
+        
+
+        {% include 'control_user/partials/header.html' %}
+        <!-- header end -->
+        <!-- start content -->
+        {% block content %}
+        
+        {% endblock content %}
+        <!-- content end -->
+        <!-- Start Footer Area -->
+        {% include 'control_user/partials/footer.html' %}
+
+        <!-- JS here -->
+        
+    <script src="{% static 'assets/js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/popper.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'assets/js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'assets/js/waypoints.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'assets/js/imgfix.min.js' %}"></script> 
+    <script src="{% static 'assets/js/mixitup.js' %}"></script> 
+    <script src="{% static 'assets/js/accordions.js' %}"></script>
+    <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+    
+    
+    <!-- Global Init -->
+    <script src="{% static 'assets/js/countdown.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="{% static 'assets/js/food.js' %}"></script>
+    
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+        {% block extrascript %}{% endblock extrascript %}
+
+    </body>
+
+</html>

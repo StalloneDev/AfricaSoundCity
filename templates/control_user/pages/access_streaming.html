@@ -1,0 +1,128 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Africa229Show</title>
+  <link rel="shortcut icon" type="image/jpeg" href="{% static 'logos/favicon.jpeg' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'styles.min.css' %}"/>
+  <link rel="icon" href="{% static 'assets/images/show.png' %}" type="image/x-icon">
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <div
+      class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center w-100">
+          <div class="col-md-8 col-lg-6 col-xxl-3">
+            <div class="card mb-0">
+              <div class="card-body m-5">
+                <a href="{% url 'home' %}" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                  <span style="font-size:26px; color: black;">Africa</span>
+                  <span style="font-size:26px; color: red;">SoundCity</span>
+                </a>
+                <p class="text-center" style="font-size:16px;">Votre plateforme de Streaming Musicale</p>
+                <p class="text-center">Entrez votre code secret pour accéder au streaming</p>
+                {% if error_message %}
+                    <p class="message" style="color: red;">{{ error_message }}</p>
+                {% elif success_message %}
+                    <p class="message" style="color: green;">{{ success_message }}</p>
+                    <a href="{% url 'streaming' %}" class="stream-btn">Regarder le streaming</a>
+                {% else %}
+                    <form method="POST" action="{% url 'access_streaming' spectacle.id %}">
+                        {% csrf_token %}
+                        <div class="code-container">
+                            <br><br>
+                            <input type="text" name="code_digit_1" id="code_digit_1" maxlength="1" class="code-input" required oninput="moveToNext(this, 'code_digit_2')">
+                            <span class="separator">-</span>
+                            <input type="text" name="code_digit_2" id="code_digit_2" maxlength="1" class="code-input" required oninput="moveToNext(this, 'code_digit_3')">
+                            <span class="separator">-</span>
+                            <input type="text" name="code_digit_3" id="code_digit_3" maxlength="1" class="code-input" required oninput="moveToNext(this, 'code_digit_4')">
+                            <span class="separator">-</span>
+                            <input type="text" name="code_digit_4" id="code_digit_4" maxlength="1" class="code-input" required oninput="moveToNext(this, 'code_digit_5')">
+                            <span class="separator">-</span>
+                            <input type="text" name="code_digit_5" id="code_digit_5" maxlength="1" class="code-input" required oninput="moveToNext(this, 'code_digit_6')">
+                            <span class="separator">-</span>
+                            <input type="text" name="code_digit_6" id="code_digit_6" maxlength="1" class="code-input" required>
+                        </div>
+                        <br><br>
+                        <button type="submit" class="submit-btn" >Vérifier le code</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>                
+</body>
+</html>
+
+
+<style>
+    .code-input {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+        text-align: center;
+        margin: 5px;
+        border: 1px solid #cf1919;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+    .code-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+        margin-bottom: 5px;
+    }
+    .submit-btn, .stream-btn {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: rgb(236, 20, 67);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .submit-btn:hover {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .separator {
+        font-size: 24px;
+        margin: 0 5px;
+    }
+    .message {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 18px;
+    }
+</style>
+<script>
+    function moveToNext(current, nextFieldID) {
+        if (current.value.length >= 1) {
+            document.getElementById(nextFieldID).focus();
+        }
+    }
+</script>

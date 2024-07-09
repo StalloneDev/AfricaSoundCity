@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réinitialisation de mot de passe</title>
+</head>
+<body>
+    <section style="font-size:20px; margin-top:14px; margin-left:14px;">
+        <p>Bonjour <span style="font-weight:bold;">{{ email }},</span></p>
+        <p>
+            Vous avez demandé la réinitialisation de votre mot de passe. Si c'est le cas, cliquez sur le lien suivant pour réinitialiser votre mot de passe :
+            <a style="text-decoration:none; color:#27ae60" href="{{ reset_url }}">{{ reset_url }}</a>
+        </p>
+        <p>Assurez-vous de changer ce mot de passe dès que possible.</p>
+        <p>
+            Merci,<br>
+            L'équipe d'<strong>AfricaSoundCity</strong>.
+        </p>
+    </section>
+</body>
+</html>

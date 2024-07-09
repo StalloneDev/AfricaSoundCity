@@ -1,0 +1,88 @@
+{% extends 'control_user/main.html' %}
+{% load static %}
+{% block content %}
+
+<br>
+<div class="shows-events-schedule">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>Free Spectacle</h2>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <ul id="free-spectacles-list">
+                    {% for spectacle in spectacles %}
+                        {% if spectacle.is_gratuit %}
+                            <li>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="title">
+                                            <h4>{{ spectacle.nom_spectacle }}</h4>
+                                            <!-- <span>{{ spectacle.ticket_disponible }} Tickets Available</span> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="time"><span><i class="fa fa-clock-o"></i> {{ spectacle.date }}<br>{{ spectacle.heure_debut }} to {{ spectacle.heure_fin }}</span></div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="place"><span><i class="fa fa-map-marker"></i>{{ spectacle.lieu }}</span></div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="main-dark-button">
+                                            <a href="{{ spectacle.lien_streaming }}">Regarder</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="shows-events-schedule">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>Payant Spectacle</h2>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <ul id="paid-spectacles-list">
+                    {% for spectacle in spectacles %}
+                        {% if not spectacle.is_gratuit %}
+                            <li>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="title">
+                                            <h4>{{ spectacle.nom_spectacle }}</h4>
+                                            <span>{{ spectacle.ticket_disponible }} Tickets Available</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="time"><span><i class="fa fa-clock-o"></i> {{ spectacle.date }}<br>{{ spectacle.heure_debut }} à {{ spectacle.heure_fin }}</span></div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="place"><span><i class="fa fa-map-marker"></i>{{ spectacle.lieu }}</span></div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="main-dark-button">
+                                            <a href="{% url 'ticketdetails' %}">Purchase Tickets</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
