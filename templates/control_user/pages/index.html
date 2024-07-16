@@ -25,7 +25,7 @@
                 <div class="owl-show-events owl-carousel" {% if forloop.first %}active{% endif %}>
                     {% for spectacle in spectacles %}      
                     <div class="item">
-                        <a href="{% url 'ticketdetails' %}"><img src="{{ spectacle.image }}" alt=""></a>
+                        <a href="#"><img src="{{ spectacle.image }}" alt=""></a>
                     </div>
                     {% endfor %}   
                 </div>
@@ -129,7 +129,9 @@
                                 <div class="down-content">
                                     <div class="left-content">
                                         <div class="main-white-button">
-                                            <a href="{% url 'ticketdetails' %}">Payer le Tickets</a>
+                                            
+                                            <a href="{% url 'ticketdetails' spectacle.id %}">Payer le Tickets</a>
+                                            
                                         </div>
                                     </div>
                                     <div class="right-content">

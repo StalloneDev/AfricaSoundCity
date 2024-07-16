@@ -53,7 +53,7 @@
                                                         <h6>Type Evenement</h6>
                                                         {% for typespectacle in typespectacles %}
                                                             <ul>
-                                                                <li><a href="{% url 'shows_by_type' typespectacle.id %}" class="event-type-link">{{ typespectacle.type }}</a></li>
+                                                                <li><a href="{% url 'shows_by_type' spectacle.type_spectacle_id %}" class="event-type-link">{{ typespectacle.type }}</a></li>
                                                             </ul>
                                                         {% endfor %}
                                                     </div>

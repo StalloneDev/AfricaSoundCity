@@ -6,7 +6,7 @@ from . import views
 from administration.views import *
 from django.conf.urls.i18n import set_language
 from django.contrib.auth.views import LogoutView
-
+from django.urls import reverse_lazy
 
 # from django.contrib.auth import views as auth_views
 # from .views import HomeView
@@ -92,7 +92,7 @@ urlpatterns = [
     path('shows/', ShowsListView.as_view(), name='shows'),
     path('shows/<int:type_spectacle_id>/', ShowsListView.as_view(), name='shows_by_type'),
     path('service/', service, name='service'), 
-    path('ticketdetails/<int:type_spectacle_id>/', ticketdetails, name='ticketdetails'), 
+    path('ticketdetails/<int:spectacle_id>/', ticketdetails, name='ticketdetails'),
     path('restaurant/', restaurant, name='restaurant'),
     path('reservet/', reservet, name='reservet'), 
     path('commander/', commander, name='commander'),
@@ -102,7 +102,7 @@ urlpatterns = [
     
     path('page_register/', page_register, name='page_register'),
     path('page_login/', page_login, name='page_login'),
-    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    path('logout/', LogoutView.as_view(next_page=('home')), name='logout'),
     path('page_password_email/', page_password_email, name='page_password_email'),
     
   

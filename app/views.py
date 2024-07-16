@@ -23,7 +23,7 @@ from rest_framework.exceptions import ValidationError as DRFValidationError
 from rest_framework.views import APIView
 import requests
 from django.db.models import Q
-from decouple import config
+import config
 from .serializers import *
 from .models import *
 from datetime import datetime, date
@@ -46,7 +46,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
-
+from django.http import HttpResponseNotFound
 
 User = get_user_model()
 
@@ -902,6 +902,8 @@ def home(request):
         'prochainconcert': prochainconcert,
     }
     
+    
+
     return render(request, 'control_user/pages/index.html', context)
 
 
@@ -915,12 +917,13 @@ def streamings(request):
         spectacles = response_spectacles.json()
     else:
         spectacles = []
+
     
     return render(request, 'control_user/pages/streamings.html', {'spectacles': spectacles})
 
 
 
-# @login_required
+@login_required
 def access_streaming(request, spectacle_id):
     spectacle = get_object_or_404(Spectacle, pk=spectacle_id)
     device_info = request.META['HTTP_USER_AGENT']  # Utiliser le user agent comme information sur l'appareil
@@ -961,23 +964,32 @@ def access_streaming(request, spectacle_id):
 
 def create_kkiapay_session(request, spectacle_id):
     spectacle = Spectacle.objects.get(id=spectacle_id)
-    # Créer la session de paiement avec les informations nécessaires
-    # (à adapter selon la documentation KKiaPay)
+    quantity = int(request.GET.get('quantity', 1))
+    total_amount = int(spectacle.prix * quantity * 100)
     
-    redirect_url = f"https://kkiapay.me/api/paymentlink?amount={int(spectacle.prix * 100)}&apikey={settings.KKIAPAY_API_KEY}&custom_data[spectacle_id]={spectacle.id}&callback_url={request.build_absolute_uri('/webhook/kkiapay/')}"
-    
+    redirect_url = f"https://kkiapay.me/api/paymentlink?amount={total_amount}&apikey={settings.KKIAPAY_API_KEY}&custom_data[spectacle_id]={spectacle.id}&custom_data[quantity]={quantity}&callback_url={request.build_absolute_uri('/webhook/kkiapay/')}"
+   
     return redirect(redirect_url)
 
 
 
-def envoyer_code_secret_par_email(utilisateur, code_qr):
-    sujet = 'Votre code secret pour le streaming payant'
-    message = render_to_string('control_user/pages/code_secret_email.html', {
-        'user': user,
-        'code_secret': code_qr.code_secret,
+
+def envoyer_codes_secrets_par_email(email, tickets_codes, spectacle):
+    if len(tickets_codes) == 1:
+        sujet = 'Votre code secret pour le streaming payant'
+    else:
+        sujet = 'Vos codes secrets pour le streaming payant'
+
+    message = render_to_string('control_user/pages/codes_secrets_email.html', {
+        'tickets_codes': tickets_codes,
+        'spectacle': spectacle,
+        'single_ticket': len(tickets_codes) == 1
     })
-    destinataires = [user.email]
+    destinataires = [email]
     send_mail(sujet, message, None, destinataires)
+
+
+
 
 
 
@@ -985,24 +997,42 @@ def envoyer_code_secret_par_email(utilisateur, code_qr):
 def kkiapay_webhook(request):
     import json
     payload = json.loads(request.body)
-    
-    # Vérifier la validité de la signature et le statut du paiement (à adapter selon la documentation KKiaPay)
+   
     if payload['status'] == 'SUCCESS':
         customer_email = payload.get('customer_email')
         spectacle_id = payload.get('custom_data', {}).get('spectacle_id')
-        
+        quantity = int(payload.get('custom_data', {}).get('quantity', 1))
+        montant_total = payload.get('amount')
+        transaction_id = payload.get('transaction_id')
+       
         if customer_email and spectacle_id:
             try:
                 spectacle = Spectacle.objects.get(id=spectacle_id)
-                # Générer le code QR et le code secret
-                code_qr = spectacle.generer_code_qr()
-                # Envoyer le code secret par e-mail
-                utilisateur = get_user_by_email(customer_email)  # Fonction pour obtenir l'utilisateur par e-mail
-                envoyer_code_secret_par_email(user, code_qr)
+                
+                achat = Achat.objects.create(
+                    spectacle=spectacle,
+                    user_email=customer_email,
+                    quantity=quantity,
+                    montant_total=montant_total,
+                    transaction_id=transaction_id,
+                    statut_paiement='SUCCESS'
+                )
+                
+                tickets_codes = []
+                for i in range(quantity):
+                    code_qr = spectacle.generer_code_qr()
+                    tickets_codes.append({
+                        'numero': i + 1,
+                        'code': code_qr.code_secret
+                    })
+                
+                envoyer_codes_secrets_par_email(customer_email, tickets_codes, spectacle)
+                
             except Spectacle.DoesNotExist:
                 return JsonResponse({'status': 'spectacle not found'}, status=404)
 
     return JsonResponse({'status': 'success'}, status=200)
+
 
 
 
@@ -1024,16 +1054,15 @@ def commander(request):
     return render(request, 'control_user/pages/commander.html')
 
 
-def ticketdetails(request, type_spectacle_id):
-    api_url_spectacles = f'http://localhost:8000/app/spectacle/?type_id={type_spectacle_id}'
+def ticketdetails(request, spectacle_id):
+    api_url_spectacles = f'http://localhost:8000/app/spectacle/{spectacle_id}/'
     response_spectacles = requests.get(api_url_spectacles)
 
     if response_spectacles.status_code == 200:
-        spectacles = response_spectacles.json()
+        spectacle = response_spectacles.json()
+        return render(request, 'control_user/pages/ticketdetails.html', {'spectacle': spectacle})
     else:
-        spectacles = []
-
-    return render(request, 'control_user/pages/ticketdetails.html', {'spectacles': spectacles})
+        return HttpResponseNotFound('Spectacle not found')
 
 
 

@@ -1,18 +1,15 @@
 {% extends 'control_user/main.html' %}
 {% load static %}
+
 {% block content %}
-
-
-
-
     <br>
-    <!-- ***** About Us Page ***** -->
+    
     <div class="page-heading-shows-events">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <h2>Acheter votre Ticket</h2>
-                    <span>Check out upcoming and past shows & events and grab your ticket right now.</span>
+                    <span>Consultez les événements à venir et passés et achetez votre billet dès maintenant.</span>
                 </div>
             </div>
         </div>
@@ -20,76 +17,167 @@
 
     <div class="ticket-details-page">
         <div class="container">
-            {% for spectacle in spectacles %}
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="left-image">
-                        <img src="{% static 'assets/images/ticket-details.jpg' %}" alt="">
+            {% if spectacle %}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="left-image">
+                            <img src="{{ spectacle.image }}" alt="">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    
-                    <div class="right-content">
-                        <h4>{{ spectacle.nom_spectacle }}</h4>
-                        <span>{{ spectacle.ticket_disponible }} Tickets still available</span>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> {{ spectacle.heure_debut }} GMT+1 - {{ spectacle.heure_fin }} GMT+1</li>
-                            <li><i class="fa fa-map-marker"></i>{{ spectacle.lieu }}</li>
-                        </ul>
-                        <div class="quantity-content">
-                            <div class="left-content">
-                                <h6>Standard Ticket</h6>
-                                <p>$65 per ticket</p>
+                    <div class="col-lg-4">
+                        <div class="right-content">
+                            <h4>{{ spectacle.nom_spectacle }}</h4>
+                            <span>{{ spectacle.ticket_disponible }} Tickets encore disponibles</span>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> {{ spectacle.heure_debut }} GMT+1 - {{ spectacle.heure_fin }} GMT+1</li>
+                                <li><i class="fa fa-map-marker"></i>{{ spectacle.lieu }}</li>
+                                <li><i class="fa far fa-calendar"></i> {{ spectacle.date }}</li>
+                            </ul>
+                            <div class="quantity-content">
+                                <div class="left-content">
+                                    <h6>Billet Standard</h6>
+                                    <p>{{ spectacle.prix }} Fcfa par billet</p>
+                                </div>
+                                <div class="right-content">
+                                    <div class="quantity buttons_added">
+                                        <input type="button" value="-" class="minus">
+                                        <input type="number"  id="ticket-quantity" step="1" min="1" max="100" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern=" " inputmode=" ">
+                                        <input type="button" value="+" class="plus">
+                                    </div>
+                                </div>
+                                
+
                             </div>
-                            <div class="right-content">
-                                <div class="quantity buttons_added">
-                                    <input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern=" " inputmode=" "><input type="button" value="+" class="plus">
+                            <div class="total">
+                                <!-- <h4 id="total-price">Total: <br> 
+                                    {{ spectacle.prix }} Fcfa
+                                </h4> -->
+                                <h4 id="total-price">Total: <span>{{ spectacle.prix }} Fcfa</span> </h4>
+                                <div class="main-dark-button">
+                                    <script id="kkiapay-script"
+                                            amount="{{ spectacle.prix }}" 
+                                            callback="https://kkiapay-redirect.com"
+                                            data=""
+                                            position="center" 
+                                            theme="#0095ff"
+                                            sandbox="true"
+                                            key="25ffe3b0e4f911ed9cc1f1b54a528cb5"
+                                            src="https://cdn.kkiapay.me/k.js">
+                                    </script>
+                                    <br>
+                                    <button class="kkiapay-button">Acheter Billets</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="total">
-                            <h4>Total: $210.00</h4>
-                            <!-- <div class="main-dark-button">
-                                <a href="#">Buy Tickets</a>
+                            <!-- <div class="warn">
+                                <p>*Vous ne pouvez acheter que jusqu'à 10 billets pour cet événement</p>
                             </div> -->
-                            <div class=" main-dark-button" >
-                                <script amount="123" 
-                                    callback="https://kkiapay-redirect.com"
-                                    data=""
-                                    position="center" 
-                                    theme="#0095ff"
-                                    sandbox="true"
-                                    key="25ffe3b0e4f911ed9cc1f1b54a528cb5"
-                                    src="https://cdn.kkiapay.me/k.js">
-                                </script>
-                                <button class="kkiapay-button " style="display: inline-block;
-                                font-size: 14px;
-                                padding: 12px 18px;
-                                background-color: #343a3e;
-                                color: #fff;
-                                text-align: center;
-                                font-weight: 500;
-                                text-transform: capitalize;
-                                transition: all .3s;
-                                border: none;
-                                outline: none;
-                                margin-left: -120;
-                                width: 80%;">Buy Tickets</button>
-                        </div>
-                        <div class="warn">
-                            <p>*Vous ne pouvez achetez que jusqu'a 10 Tickets pour cette Evenement</p>
                         </div>
                     </div>
-                    
                 </div>
-            </div>
-            {% endfor %}
+            {% else %}
+                <p>Aucun spectacle trouvé.</p>
+            {% endif %}
         </div>
     </div>
 
 
-    
+<style>
+    .ticket-details-page .left-image img {
+        max-width: 90%;
+  width: 90%;
+  height: auto;
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 5px;
+}
 
+.ticket-details-page .container {
+  /* border: 2px solid #000000; */
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.kkiapay-button {
+  background-color: #6b1212;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  
+  
+}
+
+.kkiapay-button:hover {
+    background-color: #fa1226;
+    color: white;
+}
+
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const quantityInput = document.getElementById('ticket-quantity');
+    const totalPriceElement = document.getElementById('total-price').querySelector('span');
+    const basePrice = parseFloat(totalPriceElement.textContent);
+    const minusButton = document.querySelector('.minus');
+    const plusButton = document.querySelector('.plus');
+
+    function updateTotalPrice() {
+        const quantity = Math.max(1, parseInt(quantityInput.value) || 1);
+        const totalPrice = (basePrice * quantity).toFixed(2);
+        totalPriceElement.textContent = totalPrice;
+
+        // Remove the old KKiaPay script
+        const oldScript = document.getElementById('kkiapay-script');
+        if (oldScript) {
+            oldScript.remove();
+        }
+
+        // Create a new KKiaPay script with the updated amount
+        const newScript = document.createElement('script');
+        newScript.id = 'kkiapay-script';
+        newScript.setAttribute('amount', totalPrice);
+        newScript.setAttribute('callback', 'https://kkiapay-redirect.com');
+        newScript.setAttribute('data', '');
+        newScript.setAttribute('position', 'center');
+        newScript.setAttribute('theme', '#0095ff');
+        newScript.setAttribute('sandbox', 'true');
+        newScript.setAttribute('key', '25ffe3b0e4f911ed9cc1f1b54a528cb5');
+        newScript.src = 'https://cdn.kkiapay.me/k.js';
+
+        // Add the new script to the page
+        document.body.appendChild(newScript);
+    }
+
+    minusButton.addEventListener('click', () => {
+        if (quantityInput.value > 1) {
+            quantityInput.value = parseInt(quantityInput.value) - 1;
+            updateTotalPrice();
+        }
+    });
+
+    plusButton.addEventListener('click', () => {
+        if (quantityInput.value < 100) {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+            updateTotalPrice();
+        }
+    });
+
+    quantityInput.addEventListener('change', updateTotalPrice);
+    quantityInput.addEventListener('input', updateTotalPrice);
+
+    updateTotalPrice();
+});
+
+
+
+</script>
     
 
 {% endblock content %}
+
+
+

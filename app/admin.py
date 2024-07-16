@@ -88,7 +88,14 @@ class CodeQRAdmin(admin.ModelAdmin):
     search_fields = ('spectacle__nom_spectacle', 'token')
     ordering = ('id',)
 
-    
+
+@admin.register(Achat)
+class AchatAdmin(admin.ModelAdmin):
+    list_display = ('id', 'spectacle', 'user_email', 'quantity', 'montant_total', 'date_achat', 'statut_paiement')
+    list_filter = ('spectacle', 'statut_paiement', 'date_achat')
+    search_fields = ('user_email', 'transaction_id')
+    ordering = ('-date_achat',)
+
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
@@ -169,7 +176,7 @@ class ReserverFormationAdmin(admin.ModelAdmin):
 
 @admin.register(ProchainConcert)
 class ProchainConcertAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date', 'spectacle')
+    list_display = ('id', 'date', 'spectacle', 'is_active')
     search_fields = ('date',)
     ordering = ('id',)   
     

@@ -21,7 +21,7 @@ from django.core.files import File
 from django.utils.text import slugify
 import secrets
 from django.db import IntegrityError
-import string
+import string, random
 
 
 class CustomUserManager(BaseUserManager):
@@ -272,15 +272,33 @@ class CodeQR(models.Model):
         characters = string.ascii_uppercase + string.digits
         self.code_secret = ''.join(random.choice(characters) for _ in range(6))
         self.save()
-        
-        
+
+
+class Achat(models.Model):
+    spectacle = models.ForeignKey(Spectacle, on_delete=models.CASCADE)
+    user_email = models.EmailField()
+    quantity = models.PositiveIntegerField()
+    date_achat = models.DateTimeField(auto_now_add=True)
+    montant_total = models.DecimalField(max_digits=10, decimal_places=2)
+    transaction_id = models.CharField(max_length=100, unique=True)
+    statut_paiement = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"Achat {self.transaction_id} pour {self.spectacle}"
+
+
 
 class ProchainConcert(models.Model):
     date = models.DateTimeField()
     spectacle = models.ForeignKey(Spectacle, on_delete=models.CASCADE)
-    
+    is_active = models.BooleanField(default=True)
+
     def __str__(self):
-            return f"Prochain Concert {self.date} - {self.spectacle.nom_spectacle} - {self.spectacle.id}"
+        return f"Prochain Concert {self.date} - {self.spectacle.nom_spectacle} - {self.spectacle.id}"
+
+    class Meta:
+        ordering = ['date']
+
 
     
  

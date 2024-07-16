@@ -50,7 +50,14 @@ class CodeQRForm(ModelForm):
     class Meta:
         model = CodeQR
         fields = ['spectacle', 'code_qr', 'token']
-        
+
+
+# class AchatForm(ModelForm):
+#     class Meta:
+#         model = Achat
+#         fields = ['spectacle', 'user_email', 'quantity', 'montant_total', 'transaction_id', 'statut_paiement']
+
+
 
 class ProchainConcertForm(ModelForm):
     class Meta:
